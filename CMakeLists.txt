@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 
+# Include all mama dependencies via ${MAMA_INCLUDES} and ${MAMA_LIBS}
+# For each dependency there will also be ${SomeLibrary_LIBS} (case-sensitive)
+include(mama.cmake)
+
 set(Darknet_MAJOR_VERSION 0)
 set(Darknet_MINOR_VERSION 2)
 set(Darknet_PATCH_VERSION 5)
@@ -335,10 +339,11 @@ if(CUDNN_FOUND)
 endif()
 
 if(OpenCV_FOUND)
-  target_link_libraries(darknet PRIVATE ${OpenCV_LINKED_COMPONENTS})
-  target_link_libraries(uselib PRIVATE ${OpenCV_LINKED_COMPONENTS})
-  target_link_libraries(dark PUBLIC ${OpenCV_LINKED_COMPONENTS})
-  target_include_directories(dark PUBLIC ${OpenCV_INCLUDE_DIRS})
+  target_link_libraries(darknet PRIVATE ${opencv_LIBS})
+  target_link_libraries(uselib PRIVATE ${opencv_LIBS})
+  target_link_libraries(dark PUBLIC ${opencv_LIBS})
+  target_include_directories(dark PUBLIC ${opencv_INCLUDES})
+  target_include_directories(darknet PUBLIC ${opencv_INCLUDES})
   target_compile_definitions(darknet PRIVATE -DOPENCV)
   target_compile_definitions(dark PUBLIC -DOPENCV)
 endif()
