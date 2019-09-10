@@ -20,7 +20,7 @@ class darknet(mama.BuildTarget):
             'BUILD_USELIB_TRACK=NO')
 
     def package(self):
-        self.export_include('include')
+        self.export_include('include', build_dir=True)
         self.export_libs('.', ['.dll', '.lib', '.so'])
         if self.linux:
             self.export_syslib('pthread')

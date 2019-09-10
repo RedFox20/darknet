@@ -24,6 +24,8 @@ extern "C" {
 
 #define NFRAMES 3
 
+namespace yolo
+{
 //static Detector* detector = NULL;
 static std::unique_ptr<Detector> detector;
 
@@ -428,3 +430,5 @@ void *Detector::get_cuda_context()
     return NULL;
 #endif  // GPU
 }
+   
+} // namespace yolo

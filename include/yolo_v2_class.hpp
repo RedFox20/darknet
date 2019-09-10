@@ -56,6 +56,9 @@ struct bbox_t_container {
 #include <opencv2/imgproc/imgproc_c.h>   // C
 #endif
 
+namespace yolo
+{
+    
 extern "C" LIB_API int init(const char *configurationFilename, const char *weightsFilename, int gpu);
 extern "C" LIB_API int detect_image(const char *filename, bbox_t_container &container);
 extern "C" LIB_API int detect_mat(const uint8_t* data, const size_t data_length, bbox_t_container &container);
@@ -224,8 +227,8 @@ public:
         return true;
     }
 };
+} // namespace yolo
 // --------------------------------------------------------------------------------
-
 
 #if defined(TRACK_OPTFLOW) && defined(OPENCV) && defined(GPU)
 
@@ -234,6 +237,8 @@ public:
 #include <opencv2/cudaarithm.hpp>
 #include <opencv2/core/cuda.hpp>
 
+
+namespace yolo {
 class Tracker_optflow {
 public:
     const int gpu_count;
@@ -416,12 +421,13 @@ public:
     }
 
 };
+} // namespace yolo
 
 #elif defined(TRACK_OPTFLOW) && defined(OPENCV)
 
 //#include <opencv2/optflow.hpp>
 #include <opencv2/video/tracking.hpp>
-
+namespace yolo {
 class Tracker_optflow {
 public:
     const int flow_error;
@@ -542,15 +548,19 @@ public:
     }
 
 };
+} // namespace yolo
 #else
 
+namespace yolo {
 class Tracker_optflow {};
+} // namespace yolo
 
 #endif    // defined(TRACK_OPTFLOW) && defined(OPENCV)
 
 
 #ifdef OPENCV
-
+namespace yolo
+{
 static cv::Scalar obj_id_to_color(int obj_id) {
     int const colors[6][3] = { { 1,0,1 },{ 0,0,1 },{ 0,1,1 },{ 0,1,0 },{ 1,1,0 },{ 1,0,0 } };
     int const offset = obj_id * 123457 % 6;
@@ -1044,6 +1054,7 @@ public:
     }
 
 };
+} // namespace yolo
 // ----------------------------------------------
 #endif    // OPENCV
 
