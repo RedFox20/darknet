@@ -8,6 +8,8 @@ class darknet(mama.BuildTarget):
     workspace = 'build'
 
     def dependencies(self):
+        if self.windows:
+            self.add_git('pthread', 'https://github.com/RedFox20/pthread-win32.git')
         self.add_git('opencv', 'https://github.com/RedFox20/opencv.git')
 
     def configure(self):
@@ -20,3 +22,5 @@ class darknet(mama.BuildTarget):
     def package(self):
         self.export_include('include')
         self.export_libs('.', ['.dll', '.lib', '.so'])
+        if self.linux:
+            self.export_syslib('pthread')
