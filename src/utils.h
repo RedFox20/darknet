@@ -1,5 +1,4 @@
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
 #include "darknet.h"
 #include "list.h"
 
@@ -10,8 +9,8 @@
 extern "C" {
 #endif
 
-LIB_API void free_ptrs(void **ptrs, int n);
-LIB_API void top_k(float *a, int n, int k, int *index);
+YOLO_API void free_ptrs(void **ptrs, int n);
+YOLO_API void top_k(float *a, int n, int k, int *index);
 
 double what_time_is_it_now();
 int *read_map(char *filename);
@@ -26,7 +25,7 @@ void read_all(int fd, char *buffer, size_t bytes);
 void write_all(int fd, char *buffer, size_t bytes);
 int read_all_fail(int fd, char *buffer, size_t bytes);
 int write_all_fail(int fd, char *buffer, size_t bytes);
-LIB_API void find_replace(const char* str, char* orig, char* rep, char* output);
+YOLO_API void find_replace(const char* str, char* orig, char* rep, char* output);
 void replace_image_to_label(const char* input_path, char* output_path);
 void error(const char *s);
 void malloc_error();
@@ -85,4 +84,3 @@ int max_int_index(int *a, int n);
 }
 #endif
 
-#endif

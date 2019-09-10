@@ -1,6 +1,5 @@
 // Oh boy, why am I about to do this....
-#ifndef NETWORK_H
-#define NETWORK_H
+#pragma once
 #include "darknet.h"
 
 #include <stdint.h>
@@ -124,8 +123,8 @@ float train_network_sgd(network net, data d, int n);
 float train_network_datum(network net, float *x, float *y);
 
 matrix network_predict_data(network net, data test);
-//LIB_API float *network_predict(network net, float *input);
-//LIB_API float *network_predict_ptr(network *net, float *input);
+//YOLO_API float *network_predict(network net, float *input);
+//YOLO_API float *network_predict_ptr(network *net, float *input);
 float network_accuracy(network net, data d);
 float *network_accuracies(network net, data d, int n);
 float network_accuracy_multi(network net, data d, int n);
@@ -145,24 +144,24 @@ int resize_network(network *net, int w, int h);
 void set_batch_network(network *net, int b);
 int get_network_input_size(network net);
 float get_network_cost(network net);
-//LIB_API layer* get_network_layer(network* net, int i);
-//LIB_API detection *get_network_boxes(network *net, int w, int h, float thresh, float hier, int *map, int relative, int *num, int letter);
-//LIB_API detection *make_network_boxes(network *net, float thresh, int *num);
-//LIB_API void free_detections(detection *dets, int n);
-//LIB_API void reset_rnn(network *net);
-//LIB_API network *load_network_custom(char *cfg, char *weights, int clear, int batch);
-//LIB_API network *load_network(char *cfg, char *weights, int clear);
-//LIB_API float *network_predict_image(network *net, image im);
-//LIB_API float validate_detector_map(char *datacfg, char *cfgfile, char *weightfile, float thresh_calc_avg_iou, const float iou_thresh, int map_points, int letter_box, network *existing_net);
-//LIB_API void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, int ngpus, int clear, int dont_show, int calc_map, int mjpeg_port);
-//LIB_API int network_width(network *net);
-//LIB_API int network_height(network *net);
-//LIB_API void optimize_picture(network *net, image orig, int max_layer, float scale, float rate, float thresh, int norm);
+//YOLO_API layer* get_network_layer(network* net, int i);
+//YOLO_API detection *get_network_boxes(network *net, int w, int h, float thresh, float hier, int *map, int relative, int *num, int letter);
+//YOLO_API detection *make_network_boxes(network *net, float thresh, int *num);
+//YOLO_API void free_detections(detection *dets, int n);
+//YOLO_API void reset_rnn(network *net);
+//YOLO_API network *load_network_custom(char *cfg, char *weights, int clear, int batch);
+//YOLO_API network *load_network(char *cfg, char *weights, int clear);
+//YOLO_API float *network_predict_image(network *net, image im);
+//YOLO_API float validate_detector_map(char *datacfg, char *cfgfile, char *weightfile, float thresh_calc_avg_iou, const float iou_thresh, int map_points, int letter_box, network *existing_net);
+//YOLO_API void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, int ngpus, int clear, int dont_show, int calc_map, int mjpeg_port);
+//YOLO_API int network_width(network *net);
+//YOLO_API int network_height(network *net);
+//YOLO_API void optimize_picture(network *net, image orig, int max_layer, float scale, float rate, float thresh, int norm);
 
 int get_network_nuisance(network net);
 int get_network_background(network net);
-//LIB_API void fuse_conv_batchnorm(network net);
-//LIB_API void calculate_binary_weights(network net);
+//YOLO_API void fuse_conv_batchnorm(network net);
+//YOLO_API void calculate_binary_weights(network net);
 network combine_train_valid_networks(network net_train, network net_map);
 void copy_weights_net(network net_train, network *net_map);
 void free_network_recurrent_state(network net);
@@ -172,6 +171,4 @@ void restore_network_recurrent_state(network net);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

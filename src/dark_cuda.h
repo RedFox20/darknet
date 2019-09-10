@@ -61,8 +61,8 @@ extern "C" {
     int *cuda_make_int_array(size_t n);
 	int *cuda_make_int_array_new_api(int *x, size_t n);
     void cuda_push_array(float *x_gpu, float *x, size_t n);
-    //LIB_API void cuda_pull_array(float *x_gpu, float *x, size_t n);
-    //LIB_API void cuda_set_device(int n);
+    //YOLO_API void cuda_pull_array(float *x_gpu, float *x, size_t n);
+    //YOLO_API void cuda_set_device(int n);
     int cuda_get_device();
     void cuda_free(float *x_gpu);
     void cuda_random(float *x_gpu, size_t n);
@@ -86,6 +86,6 @@ void cudnn_check_error_extended(cudnnStatus_t status, const char *file, int line
 #endif // __cplusplus
 
 #else // GPU
-//LIB_API void cuda_set_device(int n);
+//YOLO_API void cuda_set_device(int n);
 #endif // GPU
 #endif // DARKCUDA_H

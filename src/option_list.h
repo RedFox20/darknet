@@ -30,7 +30,7 @@ void option_unused(list *l);
 //	char **names;
 //} metadata;
 
-//LIB_API metadata get_metadata(char *file);
+//YOLO_API metadata get_metadata(char *file);
 
 #ifdef __cplusplus
 }

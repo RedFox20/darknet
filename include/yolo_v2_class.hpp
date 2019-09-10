@@ -1,45 +1,4 @@
-#ifndef YOLO_V2_CLASS_HPP
-#define YOLO_V2_CLASS_HPP
-
-#ifndef LIB_API
-#ifdef LIB_EXPORTS
-#if defined(_MSC_VER)
-#define LIB_API __declspec(dllexport)
-#else
-#define LIB_API __attribute__((visibility("default")))
-#endif
-#else
-#if defined(_MSC_VER)
-#define LIB_API
-#else
-#define LIB_API
-#endif
-#endif
-#endif
-
-#define C_SHARP_MAX_OBJECTS 1000
-
-struct bbox_t {
-    unsigned int x, y, w, h;       // (x,y) - top-left corner, (w, h) - width & height of bounded box
-    float prob;                    // confidence - probability that the object was found correctly
-    unsigned int obj_id;           // class of object - from range [0, classes-1]
-    unsigned int track_id;         // tracking id for video (0 - untracked, 1 - inf - tracked object)
-    unsigned int frames_counter;   // counter of frames on which the object was detected
-    float x_3d, y_3d, z_3d;        // center of object (in Meters) if ZED 3D Camera is used
-};
-
-struct image_t {
-    int h;                        // height
-    int w;                        // width
-    int c;                        // number of chanels (3 - for RGB)
-    float *data;                  // pointer to the image data
-};
-
-struct bbox_t_container {
-    bbox_t candidates[C_SHARP_MAX_OBJECTS];
-};
-
-#ifdef __cplusplus
+#pragma once
 #include <memory>
 #include <vector>
 #include <deque>
@@ -56,19 +15,58 @@ struct bbox_t_container {
 #include <opencv2/imgproc/imgproc_c.h>   // C
 #endif
 
+#ifndef YOLO_API
+    #ifdef LIB_EXPORTS
+        #if _MSC_VER
+            #define YOLO_API __declspec(dllexport)
+        #else
+            #define YOLO_API __attribute__((visibility("default")))
+        #endif
+    #else
+        #define YOLO_API
+    #endif
+#endif
+
+#define C_SHARP_MAX_OBJECTS 1000
+
+namespace yolo {
+    struct bbox_t {
+        unsigned int x, y, w, h;       // (x,y) - top-left corner, (w, h) - width & height of bounded box
+        float prob;                    // confidence - probability that the object was found correctly
+        unsigned int obj_id;           // class of object - from range [0, classes-1]
+        unsigned int track_id;         // tracking id for video (0 - untracked, 1 - inf - tracked object)
+        unsigned int frames_counter;   // counter of frames on which the object was detected
+        float x_3d, y_3d, z_3d;        // center of object (in Meters) if ZED 3D Camera is used
+    };
+
+    struct image_t {
+        int h;                        // height
+        int w;                        // width
+        int c;                        // number of chanels (3 - for RGB)
+        float *data;                  // pointer to the image data
+    };
+
+    struct bbox_t_container {
+        bbox_t candidates[C_SHARP_MAX_OBJECTS];
+    };
+}
+
+
+
+
 namespace yolo
 {
     
-extern "C" LIB_API int init(const char *configurationFilename, const char *weightsFilename, int gpu);
-extern "C" LIB_API int detect_image(const char *filename, bbox_t_container &container);
-extern "C" LIB_API int detect_mat(const uint8_t* data, const size_t data_length, bbox_t_container &container);
-extern "C" LIB_API int dispose();
-extern "C" LIB_API int get_device_count();
-extern "C" LIB_API int get_device_name(int gpu, char* deviceName);
-extern "C" LIB_API bool built_with_cuda();
-extern "C" LIB_API bool built_with_cudnn();
-extern "C" LIB_API bool built_with_opencv();
-extern "C" LIB_API void send_json_custom(char const* send_buf, int port, int timeout);
+extern "C" YOLO_API int init(const char *configurationFilename, const char *weightsFilename, int gpu);
+extern "C" YOLO_API int detect_image(const char *filename, bbox_t_container &container);
+extern "C" YOLO_API int detect_mat(const uint8_t* data, const size_t data_length, bbox_t_container &container);
+extern "C" YOLO_API int dispose();
+extern "C" YOLO_API int get_device_count();
+extern "C" YOLO_API int get_device_name(int gpu, char* deviceName);
+extern "C" YOLO_API bool built_with_cuda();
+extern "C" YOLO_API bool built_with_cudnn();
+extern "C" YOLO_API bool built_with_opencv();
+extern "C" YOLO_API void send_json_custom(char const* send_buf, int port, int timeout);
 
 class Detector {
     std::shared_ptr<void> detector_gpu_ptr;
@@ -78,23 +76,23 @@ public:
     float nms = .4;
     bool wait_stream;
 
-    LIB_API Detector(std::string cfg_filename, std::string weight_filename, int gpu_id = 0);
-    LIB_API ~Detector();
+    YOLO_API Detector(std::string cfg_filename, std::string weight_filename, int gpu_id = 0);
+    YOLO_API ~Detector();
 
-    LIB_API std::vector<bbox_t> detect(std::string image_filename, float thresh = 0.2, bool use_mean = false);
-    LIB_API std::vector<bbox_t> detect(image_t img, float thresh = 0.2, bool use_mean = false);
-    static LIB_API image_t load_image(std::string image_filename);
-    static LIB_API void free_image(image_t m);
-    LIB_API int get_net_width() const;
-    LIB_API int get_net_height() const;
-    LIB_API int get_net_color_depth() const;
+    YOLO_API std::vector<bbox_t> detect(std::string image_filename, float thresh = 0.2, bool use_mean = false);
+    YOLO_API std::vector<bbox_t> detect(image_t img, float thresh = 0.2, bool use_mean = false);
+    static YOLO_API image_t load_image(std::string image_filename);
+    static YOLO_API void free_image(image_t m);
+    YOLO_API int get_net_width() const;
+    YOLO_API int get_net_height() const;
+    YOLO_API int get_net_color_depth() const;
 
-    LIB_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
+    YOLO_API std::vector<bbox_t> tracking_id(std::vector<bbox_t> cur_bbox_vec, bool const change_history = true,
                                                 int const frames_story = 5, int const max_dist = 40);
 
-    LIB_API void *get_cuda_context();
+    YOLO_API void *get_cuda_context();
 
-    //LIB_API bool send_json_http(std::vector<bbox_t> cur_bbox_vec, std::vector<std::string> obj_names, int frame_id,
+    //YOLO_API bool send_json_http(std::vector<bbox_t> cur_bbox_vec, std::vector<std::string> obj_names, int frame_id,
     //    std::string filename = std::string(), int timeout = 400000, int port = 8070);
 
     std::vector<bbox_t> detect_resized(image_t img, int init_w, int init_h, float thresh = 0.2, bool use_mean = false)
@@ -1057,7 +1055,3 @@ public:
 } // namespace yolo
 // ----------------------------------------------
 #endif    // OPENCV
-
-#endif    // __cplusplus
-
-#endif    // YOLO_V2_CLASS_HPP
